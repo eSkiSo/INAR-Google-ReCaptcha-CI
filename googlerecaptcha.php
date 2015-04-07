@@ -29,18 +29,36 @@
  * @author		Eskiso
  */
 
-class GoogleReCaptcha {
-
+class googlerecaptcha {
+	
+	const VERSION = '1.1.0';
 	var $CI;
 	var $secret_key = 'CHANGE THIS WITH YOUR SECRET KEY FROM URL ABOVE';
-
+	var $site_key = 'CHANGE THIS WITH YOUR SITE KEY FROM URL ABOVE'; //Just for reference
+	
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->CI =& get_instance(); //for no reason...
 	}
-
+	
+	/**
+	 * GoogleReCaptcha CI Version
+	 * @return void echos version
+	 */
+	public function version() {
+		echo "GoogleReCaptcha CI Lib Version: ". self::VERSION;
+	}
+	
+	/**
+	 * Returns site key
+	 * @return string site key
+	 */
+	public function my_site_key() {
+		return $this->site_key;
+	}
+	
 	/**
 	 * Gets $_POST['g-recaptcha-response'] and checks if it is confirmed on google recaptcha
 	 * @param  string $response - $_POST['g-recaptcha-response']
@@ -52,7 +70,7 @@ class GoogleReCaptcha {
 		if(is_null($response)) {
 			return false;
 		}
-		$params = array('secret' => $this->$secret_key, 'response' => $response);
+		$params = array('secret' => $this->secret_key, 'response' => $response);
 	        if (!is_null($remoteIP)) {
 	            $params['remoteip'] = $remoteIP;
 	        }
