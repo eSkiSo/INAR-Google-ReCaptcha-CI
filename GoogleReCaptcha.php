@@ -5,7 +5,7 @@
  * Apply Google ReCaptcha to your codeigniter apps
  * Secret Key - Get it at https://www.google.com/recaptcha/admin
  * Add to form: <div class="g-recaptcha" data-sitekey="CHANGE THIS WITH YOUR SITE KEY FROM URL ABOVE"></div>
- * Some code copied from http://www.google.com/recaptcha
+ * Some code copied from https://github.com/google/recaptcha
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,29 +53,30 @@ class GoogleReCaptcha {
 			return false;
 		}
 		$params = array('secret' => $this->$secret_key, 'response' => $response);
-        if (!is_null($remoteIP)) {
-            $params['remoteip'] = $remoteIP;
-        }
+	        if (!is_null($remoteIP)) {
+	            $params['remoteip'] = $remoteIP;
+	        }
 		$params['version'] = 'php_1.1.1';
 		$content = http_build_query($params);
-        $options = array(
-            'http' => array(
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => $content,
-                'verify_peer' => true,
-                $peer_key => 'www.google.com',
-            ),
-        );
-        $context = stream_context_create($options);
-        $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
-        $responseData = json_decode($result, true);
-        if (isset($responseData['success']) && $responseData['success'] === true) {
-        	return true;
-        }
-        else {
-        	return false;
-        }
+		$peer_key = version_compare(PHP_VERSION, '5.6.0', '<') ? 'CN_name' : 'peer_name';
+	        $options = array(
+	            'http' => array(
+	                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+	                'method' => 'POST',
+	                'content' => $content,
+	                'verify_peer' => true,
+	                $peer_key => 'www.google.com',
+	            ),
+	        );
+	        $context = stream_context_create($options);
+	        $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+	        $responseData = json_decode($result, true);
+	        if (isset($responseData['success']) && $responseData['success'] === true) {
+	        	return true;
+	        }
+	        else {
+	        	return false;
+	        }
    
 	}
 }
