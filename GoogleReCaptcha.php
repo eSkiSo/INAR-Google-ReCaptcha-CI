@@ -43,8 +43,8 @@ class GoogleReCaptcha {
 
 	/**
 	 * Gets $_POST['g-recaptcha-response'] and checks if it is confirmed on google recaptcha
-	 * @param  string - $_POST['g-recaptcha-response']
-	 * @param string - a simple $_SERVER['REMOTE_ADDR'] will do
+	 * @param  string $response - $_POST['g-recaptcha-response']
+	 * @param string $remoteIP - a simple $_SERVER['REMOTE_ADDR'] will do
 	 * @return bool - True if success.
 	 */
 	public function verify_robot($response = NULL, $remoteIP = NULL) {
